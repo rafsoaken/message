@@ -48,22 +48,26 @@ class Message_Core
 	 */
 	public static function clear()
 	{
-		Session::instance()->delete('flash_message');
+		Session::instance()->delete('flash_messages');
 	}
 
 	/**
-	 * Displays the message
+	 * Displays the messages
 	 *
-	 * @return	string	Message to string
+	 * @return	string	Messages to string
 	 */
 	public static function display()
 	{
 		$msg = self::get();
 
-		if( $msg ){
+		if (0 < count($msg))
+		{
 			self::clear();
-			return View::factory('message/basic')->set('message', $msg)->render();
-		} else	{
+			return View::factory('message/basic')
+				->bind('messages', $msg)
+				->render();
+		}
+		else {
 			return '';
 		}
 	}
@@ -81,11 +85,11 @@ class Message_Core
 	/**
 	 * Gets the current message.
 	 *
-	 * @return	mixed	The message or FALSE
+	 * @return	array	The messages
 	 */
 	public static function get()
 	{
-		return Session::instance()->get('flash_message', FALSE);
+		return Session::instance()->get('flash_messages', array());
 	}
 
 	/**
@@ -97,7 +101,13 @@ class Message_Core
 	 */
 	public static function set($type, $message)
 	{
-		Session::instance()->set('flash_message', new Message($type, $message));
+		$messages = self::get();
+		if (is_string($message))
+			$message = array($message);
+		foreach ($message as $single_message)
+			$messages[] = new Message($type, $single_message);
+		Session::instance()->set('flash_messages', $messages);
+		unset($messages);
 	}
 
 }

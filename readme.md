@@ -9,7 +9,7 @@ To set a flash message all it takes is the following
 
 Message::set( _type_, _message_ );
 
-_type_: Use a constant that can be found below   
+_type_: Use a constant that can be found below
 _message_:  A message string or array of message strings
 
 When you need to get a message you can:
@@ -27,10 +27,10 @@ There are 4 constants you can use to set a message
 
 ## Style
 The message class produces the following code by default
-	<ul id="message" class"_type_">
-		<li>_Message_</li>
+	<ul id="message">
+		<li class"_type_">_Message_</li>
 		... Repeated if an array
-		</ul>
+	</ul>
 
 To style, set #message and the classes for the constants
 .error, .success, .notice, .warn
